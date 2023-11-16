@@ -42,7 +42,7 @@ h1>img {
 }
 
 #info {
-    padding-top: 5px;
+    padding-top: 10px;
     flex-grow: 1;
     row-gap: 10px;
     display: flex;
@@ -56,4 +56,11 @@ h1>img {
 #cook-ins {
     text-align: justify;
     line-height: 1.5;
+    height: 290px;
+    overflow-y: hidden;
+    scrollbar-gutter: stable;
+}
+
+#cook-ins:hover {
+    overflow-y: overlay;
 }
