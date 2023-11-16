@@ -48,6 +48,8 @@ function render() {
     if (searchedMeals.length > 0) divSearchResults.classList.add('show');
     else divSearchResults.classList.remove('show');
 
+    synchronize();
+
 }
 
 
@@ -67,8 +69,28 @@ function getMealLiElement(meal) {
 
     const imgFav = li.querySelector('img.fav-icon');
 
-    imgFav.onclick = function () {
-        showSnackbar('Added to Favourites');
+    li.onclick = function () {
+        window.open(`meal-details.html?id=${meal.idMeal}`, '_newtab');
+    };
+
+    imgFav.onclick = function (event) {
+
+        event.stopPropagation();
+
+        if (meal.isFavourite) {
+            meal.isFavourite = false;
+            favouriteMeals = favouriteMeals.filter(m => m.id !== meal.idMeal);
+            showSnackbar('Removed from favourites');
+            render();
+            return;
+        }
+
+        meal.isFavourite = true;
+        favouriteMeals.push({ id: meal.idMeal });
+        showSnackbar('Added to favourites');
+        render();
+
+
     };
 
     return li;
@@ -90,5 +112,7 @@ function showSnackbar(message) {
     divSnackbar.innerText = message;
     setTimeout(function () { divSnackbar.className = divSnackbar.className.replace("show", ""); }, 2000);
 }
+
+function synchronize() { }
 
 render();
