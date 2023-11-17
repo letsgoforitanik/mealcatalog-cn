@@ -5,6 +5,7 @@ const spanMealName = document.querySelector('#name');
 const spanMealCategory = document.querySelector('#category');
 const spanMealCuisine = document.querySelector('#cuisine');
 const spanCookInstruction = document.querySelector('#instruction');
+const loader = document.querySelector('#loader');
 
 
 async function load() {
@@ -14,6 +15,8 @@ async function load() {
     const response = await fetch(url);
     const results = await response.json();
     const meal = results.meals[0];
+
+    loader.classList.add('hide');
 
     ///////////////////////////////////////////
 

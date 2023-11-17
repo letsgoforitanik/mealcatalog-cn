@@ -64,3 +64,21 @@ h1>img {
 #cook-ins:hover {
     overflow-y: overlay;
 }
+
+#loader {
+    width: 100vw;
+    height: 100vh;
+    color: black;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 20px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.hide {
+    display: none !important;
+}

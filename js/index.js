@@ -8,7 +8,17 @@ let abortController = null;
 let searchedMeals = [];
 let favouriteMeals = [];
 
-txtSearch.onkeyup = async function () {
+
+document.onclick = function () {
+    searchedMeals = [];
+    render();
+};
+
+txtSearch.onkeyup = () => searchMeal();
+
+btnSearch.onclick = () => searchMeal();
+
+async function searchMeal() {
 
     const searchTerm = txtSearch.value;
 
@@ -32,8 +42,7 @@ txtSearch.onkeyup = async function () {
     searchedMeals.forEach(meal => meal.isFavourite = isFavouriteMeal(meal.idMeal));
 
     render();
-
-};
+}
 
 
 function render() {
@@ -48,7 +57,7 @@ function render() {
     if (searchedMeals.length > 0) divSearchResults.classList.add('show');
     else divSearchResults.classList.remove('show');
 
-    synchronize();
+    synchronizeToStorage();
 
 }
 
@@ -69,7 +78,8 @@ function getMealLiElement(meal) {
 
     const imgFav = li.querySelector('img.fav-icon');
 
-    li.onclick = function () {
+    li.onclick = function (event) {
+        event.stopPropagation();
         window.open(`meal-details.html?id=${meal.idMeal}`, '_newtab');
     };
 
@@ -86,7 +96,15 @@ function getMealLiElement(meal) {
         }
 
         meal.isFavourite = true;
-        favouriteMeals.push({ id: meal.idMeal });
+
+        favouriteMeals.push({
+            id: meal.idMeal,
+            image: meal.strMealThumb,
+            name: meal.strMeal,
+            category: meal.strCategory,
+            cuisine: meal.strArea
+        });
+
         showSnackbar('Added to favourites');
         render();
 
@@ -113,6 +131,16 @@ function showSnackbar(message) {
     setTimeout(function () { divSnackbar.className = divSnackbar.className.replace("show", ""); }, 2000);
 }
 
-function synchronize() { }
+function synchronizeToStorage() {
+    localStorage.clear();
+    localStorage.setItem('data', JSON.stringify(favouriteMeals));
+}
 
-render();
+
+function loadData() {
+    const data = localStorage.getItem('data');
+    favouriteMeals = data ? JSON.parse(data) : [];
+    render();
+}
+
+loadData();

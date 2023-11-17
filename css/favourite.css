@@ -43,7 +43,6 @@ img.meal-icon {
     width: 70px;
     height: 70px;
     border-radius: 10px;
-    border: 1px solid #8f8f8f;
 }
 
 div.details {
@@ -53,6 +52,7 @@ div.details {
 
 .meal-heading {
     margin-bottom: 6px;
+    cursor: pointer;
 }
 
 .meal-sub {
