@@ -1,23 +1,38 @@
+// dom elements
 const divSearch = document.querySelector('#search');
 const txtSearch = divSearch.querySelector('input');
 const btnSearch = divSearch.querySelector('button');
 const ulResults = document.querySelector('#results');
 const divSearchResults = divSearch.querySelector('#search-results');
 
+// internal states =========================
+
 let abortController = null;
 let searchedMeals = [];
 let favouriteMeals = [];
 
+// click handlers ==========================
 
+// search result window is closed, when
+// a click event occurs anywhere inside 
+// the document
 document.onclick = function () {
     searchedMeals = [];
     render();
 };
 
+// meals are searched when typing goes on
 txtSearch.onkeyup = () => searchMeal();
 
+// meals are searched when the button is clicked
 btnSearch.onclick = () => searchMeal();
 
+
+// this function looks for meals using the given
+// search term. It consumes the mealdb api.
+// Search results are shown in a floating menu.
+// When a keystroke is pressed, previous pending 
+// searches are cancelled.
 async function searchMeal() {
 
     const searchTerm = txtSearch.value;
@@ -44,7 +59,10 @@ async function searchMeal() {
     render();
 }
 
-
+// 'react' style render function
+// Whenever application state is changed, this 
+// function is called. The sole purpose of this
+// function is to render UI.
 function render() {
 
     ulResults.innerHTML = '';
@@ -61,7 +79,9 @@ function render() {
 
 }
 
-
+// this function returns a li element
+// that corresponds to the given meal
+// object
 function getMealLiElement(meal) {
 
     const li = document.createElement('li');
@@ -73,16 +93,20 @@ function getMealLiElement(meal) {
                         <div class="food-name">${meal.strMeal}</div>
                         <div class="food-category">${meal.strCategory} | ${meal.strArea}</div>
                     </div>
-                    <img src="assets/fav-${favIcon}.png" alt="fav-icon" class="fav-icon">`;
+                    <img src="assets/fav-${favIcon}.png" alt="fav-icon" class="fav-icon" title="Add to Favourites">`;
 
 
     const imgFav = li.querySelector('img.fav-icon');
 
+    // when this li is clicked, a new 
+    // tab is opened, with the details of the meal
+    // that has been clicked
     li.onclick = function (event) {
         event.stopPropagation();
         window.open(`meal-details.html?id=${meal.idMeal}`, '_newtab');
     };
 
+    // toggles favourites
     imgFav.onclick = function (event) {
 
         event.stopPropagation();
@@ -115,6 +139,8 @@ function getMealLiElement(meal) {
 }
 
 
+// checks the given meal id in favouriteMeals
+// array, returns boolean accordingly
 function isFavouriteMeal(mealId) {
 
     for (let meal of favouriteMeals) {
@@ -124,6 +150,9 @@ function isFavouriteMeal(mealId) {
     return false;
 }
 
+// shows android style snackbar
+// with the given message at the bottom
+// of the screen
 function showSnackbar(message) {
     const divSnackbar = document.getElementById("snackbar");
     divSnackbar.className = "show";
@@ -131,12 +160,17 @@ function showSnackbar(message) {
     setTimeout(function () { divSnackbar.className = divSnackbar.className.replace("show", ""); }, 2000);
 }
 
+// synchronizes content of the favouriteMeals array
+// in localStorage, everytime UI rendering occurs and
+// content of the favouriteMeals array is modified
 function synchronizeToStorage() {
     localStorage.clear();
     localStorage.setItem('data', JSON.stringify(favouriteMeals));
 }
 
-
+// when page loads, it fetches the favourite meals
+// from localStorage and populates the favouriteMeals
+// array
 function loadData() {
     const data = localStorage.getItem('data');
     favouriteMeals = data ? JSON.parse(data) : [];
