@@ -11,7 +11,7 @@ body {
     height: 100vh;
     width: 100vw;
     display: flex;
-    justify-content: center;
+    flex-direction: column;
 }
 
 div.container {
@@ -19,6 +19,7 @@ div.container {
     display: flex;
     flex-direction: column;
     row-gap: 20px;
+    align-items: center;
 }
 
 div.container>h1 {
@@ -156,4 +157,20 @@ ul#results>li:hover {
     height: 20px;
     margin-left: 7px;
     cursor: pointer;
+}
+
+#favourite-meals {
+    width: 100%;
+    text-align: end;
+    padding-right: 20px;
+    padding-top: 5px;
+}
+
+#favourite-meals a {
+    text-decoration: none;
+    color: #585858;
+}
+
+#favourite-meals a:hover {
+    text-decoration: underline;
 }
